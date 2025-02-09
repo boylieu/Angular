@@ -1,0 +1,44 @@
+<h1 style="text-align: center; padding: 25px; font-family: 'Arial', sans-serif; color: #333;">Liste des Résidences</h1>
+
+<div class="container">
+  <div class="mb-3">
+    <input 
+      type="text" 
+      class="form-control" 
+      placeholder="Rechercher par adresse" 
+      [(ngModel)]="searchText" 
+      (input)="filterResidences()" 
+    />
+  </div>
+
+  <div class="row">
+    <div *ngFor="let R of filteredResidences" class="col-md-4 mb-3 d-flex justify-content-center">
+      <div class="card" style="width: 18rem; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s;">
+        <img [src]="R.image" alt="card image cap" class="card-img-top" style="border-top-left-radius: 10px; border-top-right-radius: 10px; height: 200px; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold; color: #2C3E50;">{{ R.name }}</h5>
+
+          <h5 *ngIf="R.showLocation" class="card-title" style="font-size: 1rem; color: #34495E;">{{ R.address }}</h5>
+          
+          <a class="btn btn-primary btn-sm" (click)="show(R)" style="width: 100%; margin-bottom: 10px; font-weight: 600;">Show Location</a>
+
+          <div *ngIf="R.status === 'Disponible'">
+            <p class="text-success" style="font-weight: bold;">Disponible</p>
+          </div>
+          <div *ngIf="R.status === 'En Construction'">
+            <p class="text-warning" style="font-weight: bold;">En Construction</p>
+          </div>
+          <div *ngIf="R.status === 'Vendu'">
+            <p class="text-danger" style="font-weight: bold;">Vendu</p>
+          </div>
+
+          <button (click)="addToFavorites(R)" class="btn" 
+            [ngClass]="{'btn-outline-danger': !R.isFavorite, 'btn-danger': R.isFavorite}" 
+            style="width: 100%; font-weight: 600; border-radius: 20px;">
+            {{ R.isFavorite ? 'Added to Favorites' : 'Like' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
